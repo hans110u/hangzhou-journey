@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>杭州湘湖露营购物之旅</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-100-M/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #333333;
+            --secondary-color: #666666;
+            --accent-color: #4CAF50;
+            --background-color: #FFFFFF;
+            --border-color: #EEEEEE;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 100%;
+            padding: 2rem 1.5rem;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .weather-forecast {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            padding: 1rem;
+        }
+
+        .weather-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            min-width: 120px;
+        }
+
+        .route-item {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .route-item:not(:last-child)::after {
+            content: "↓";
+            position: absolute;
+            bottom: -1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+
+        .location-name {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        .location-name:hover {
+            color: var(--accent-color);
+        }
+
+        .location-info {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .navigate-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .navigate-btn:hover {
+            opacity: 0.9;
+        }
+
+        .tips {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .tips-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .tips-list li {
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .checklist {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+
+        .checklist-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .checklist-title:before {
+            content: "📋";
+            margin-right: 0.5rem;
+        }
+
+        .checklist-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .checklist-group-title {
+            font-weight: 500;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+
+        .budget-detail {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .budget-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .budget-total {
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .parking-info {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+
+        .parking-spot {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .parking-name {
+            font-weight: 500;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .parking-detail {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+
+        .emergency-contacts {
+            background: #fff3cd;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .emergency-title {
+            color: #856404;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .emergency-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            color: #856404;
+        }
+
+        .emergency-item:before {
+            content: "☎";
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">杭州湘湖露营购物之旅</h1>
+            <div class="weather-forecast">
+                <div class="weather-card" style="background-color: #e3f2fd;">
+                    <div>4月17日（周四）</div>
+                    <div>多云转晴</div>
+                    <div>29°C/20°C</div>
+                    <div>适合露营</div>
+                </div>
+                <div class="weather-card">
+                    <div>4月18日（周五）</div>
+                    <div>晴转小雨</div>
+                    <div>33°C/21°C</div>
+                    <div>不适合露营</div>
+                </div>
+                <div class="weather-card">
+                    <div>4月19日（周六）</div>
+                    <div>小雨转多云</div>
+                    <div>27°C/19°C</div>
+                    <div>不适合露营</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="route-container">
+            <div class="route-item">
+                <div class="location-name" onclick="openMap('30.308491,120.215460', '山姆会员商店(西子丁兰店)')">起点：山姆会员商店(西子丁兰店)</div>
+                <div class="location-info">地址：大农港路1238-1278号西子丁兰广场F1层</div>
+                <div class="location-info">营业时间：9:00-22:00</div>
+                <div class="location-info">建议采购：露营装备、食材、日用品</div>
+            </div>
+
+            <div class="route-item">
+                <div class="location-name" onclick="openMap('30.306789,120.217234', '水果大卖场')">第二站：水果大卖场</div>
+                <div class="location-info">距离上一站：步行5分钟</div>
+                <div class="location-info">建议采购：当季水果、饮品</div>
+                <div class="navigate-btn" onclick="navigateTo('30.308491,120.215460', '30.306789,120.217234')">导航到这里</div>
+            </div>
+
+            <div class="route-item">
+                <div class="location-name" onclick="openMap('30.305234,120.218956', '普惠超市')">第三站：普惠超市</div>
+                <div class="location-info">距离上一站：步行3分钟</div>
+                <div class="location-info">建议采购：零食、饮料</div>
+                <div class="navigate-btn" onclick="navigateTo('30.306789,120.217234', '30.305234,120.218956')">导航到这里</div>
+            </div>
+
+            <div class="route-item">
+                <div class="location-name" onclick="openMap('30.169728,120.272768', '湘湖国家旅游度假区')">终点：湘湖露营基地</div>
+                <div class="location-info">地址：湘湖路132号</div>
+                <div class="location-info">驾车约30分钟</div>
+                <div class="location-info">露营地点：湘湖金沙滩区域</div>
+                <div class="navigate-btn" onclick="navigateTo('30.305234,120.218956', '30.169728,120.272768')">导航到这里</div>
+            </div>
+        </div>
+
+        <div class="tips">
+            <h2 class="tips-title">出行建议</h2>
+            <ul class="tips-list">
+                <li>根据天气预报，4月17日最适合露营，天气晴好温度适中</li>
+                <li>建议携带防潮垫、帐篷、照明设备等露营必需品</li>
+                <li>湘湖金沙滩区域设有专门的露营区，配有供水和卫生间</li>
+                <li>请提前在山姆会员店采购足够的食物和饮用水</li>
+                <li>露营地点建议提前电话预约：0571-12301</li>
+                <li>自驾路线全程约15公里，建议避开早晚高峰</li>
+            </ul>
+        </div>
+
+        <div class="checklist">
+            <h2 class="checklist-title">露营装备清单</h2>
+            
+            <div class="checklist-group">
+                <h3 class="checklist-group-title">必备装备</h3>
+                <div class="checklist-item">
+                    <input type="checkbox" id="tent"><label for="tent">帐篷（2-3人帐）</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="mat"><label for="mat">防潮垫</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="sleepingBag"><label for="sleepingBag">睡袋</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="light"><label for="light">营地灯/手电筒</label>
+                </div>
+            </div>
+
+            <div class="checklist-group">
+                <h3 class="checklist-group-title">野餐用品</h3>
+                <div class="checklist-item">
+                    <input type="checkbox" id="mat2"><label for="mat2">野餐垫</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="cooler"><label for="cooler">保温箱/保温袋</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="tableware"><label for="tableware">餐具套装</label>
+                </div>
+            </div>
+
+            <div class="checklist-group">
+                <h3 class="checklist-group-title">个人用品</h3>
+                <div class="checklist-item">
+                    <input type="checkbox" id="clothes"><label for="clothes">保暖外套</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="mosquito"><label for="mosquito">防蚊喷雾</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="firstaid"><label for="firstaid">简易医药包</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="budget-detail">
+            <h2 class="tips-title">预算明细</h2>
+            <div class="budget-item">
+                <span>露营装备（帐篷租赁）</span>
+                <span>¥100</span>
+            </div>
+            <div class="budget-item">
+                <span>食材饮品</span>
+                <span>¥200</span>
+            </div>
+            <div class="budget-item">
+                <span>湘湖景区门票</span>
+                <span>¥80</span>
+            </div>
+            <div class="budget-item">
+                <span>停车费</span>
+                <span>¥30</span>
+            </div>
+            <div class="budget-item">
+                <span>其他用品</span>
+                <span>¥100</span>
+            </div>
+            <div class="budget-total">
+                <span>总计（2人）</span>
+                <span>¥510</span>
+            </div>
+        </div>
+
+        <div class="parking-info">
+            <h2 class="tips-title">停车信息</h2>
+            <div class="parking-spot">
+                <div class="parking-name">山姆会员店停车场</div>
+                <div class="parking-detail">
+                    <p>位置：地下停车场</p>
+                    <p>费用：会员免费2小时</p>
+                    <p>车位数：充足</p>
+                </div>
+            </div>
+            <div class="parking-spot">
+                <div class="parking-name">湘湖景区停车场</div>
+                <div class="parking-detail">
+                    <p>位置：湘湖路132号景区入口</p>
+                    <p>费用：15元/次</p>
+                    <p>营业时间：24小时</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="emergency-contacts">
+            <h2 class="emergency-title">紧急联系方式</h2>
+            <div class="emergency-item">湘湖景区管理处：0571-82838735</div>
+            <div class="emergency-item">露营区管理员：138-XXXX-XXXX</div>
+            <div class="emergency-item">杭州天气预报：0571-96121</div>
+            <div class="emergency-item">急救电话：120</div>
+            <div class="emergency-item">报警电话：110</div>
+        </div>
+    </div>
+
+    <script>
+        function openMap(location, name) {
+            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                window.location.href = `iosamap://path?sourceApplication=applicationName&sid=BGVIS1&did=BGVIS2&dlat=${location.split(',')[0]}&dlon=${location.split(',')[1]}&dname=${encodeURIComponent(name)}&dev=0`;
+            }
+            else if (/android/i.test(userAgent)) {
+                window.location.href = `androidamap://route?sourceApplication=applicationName&dlat=${location.split(',')[0]}&dlon=${location.split(',')[1]}&dname=${encodeURIComponent(name)}&dev=0&t=0`;
+            }
+            else {
+                window.location.href = `https://uri.amap.com/navigation?to=${location},${encodeURIComponent(name)}&mode=car&policy=1&src=mypage&coordinate=gaode&callnative=0`;
+            }
+        }
+
+        function navigateTo(fromLocation, toLocation) {
+            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                window.location.href = `iosamap://path?sourceApplication=applicationName&slat=${fromLocation.split(',')[0]}&slon=${fromLocation.split(',')[1]}&dlat=${toLocation.split(',')[0]}&dlon=${toLocation.split(',')[1]}&dev=0`;
+            }
+            else if (/android/i.test(userAgent)) {
+                window.location.href = `androidamap://route?sourceApplication=applicationName&slat=${fromLocation.split(',')[0]}&slon=${fromLocation.split(',')[1]}&dlat=${toLocation.split(',')[0]}&dlon=${toLocation.split(',')[1]}&dev=0&t=0`;
+            }
+            else {
+                window.location.href = `https://uri.amap.com/navigation?from=${fromLocation}&to=${toLocation}&mode=car&policy=1&src=mypage&coordinate=gaode&callnative=0`;
+            }
+        }
+    </script>
+</body>
+</html> 
